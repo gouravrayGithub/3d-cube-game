@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rubik's Cube</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <div id="ui">
+    <h1>Rubik's Cube</h1>
+    <div class="buttons">
+      <button id="scramble-btn">Scramble</button>
+      <button id="reset-btn">Reset</button>
+    </div>
+    <div class="controls-info">
+      <p><strong>Controls:</strong></p>
+      <p>Click + drag on cube to rotate faces</p>
+      <p>Drag background to rotate view</p>
+      <p>Keys: R, L, U, D, F, B (+ Shift for reverse)</p>
+    </div>
+  </div>
+
+  <div id="message" class="message"></div>
+
+  <div id="debug-display"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

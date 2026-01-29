@@ -1,0 +1,17 @@
+{
+  "name": "3d-cube-game",
+  "version": "1.0.0",
+  "description": "A 3D cube game built with Three.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "three": "^0.160.0"
+  }
+}
