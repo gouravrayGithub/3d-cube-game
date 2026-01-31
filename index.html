@@ -21,10 +21,25 @@
       z-index: 300;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .dev-banner strong { color: #00bfff; }
     .dev-banner a { color: #00bfff; text-decoration: none; }
     .dev-banner a:hover { text-decoration: underline; }
+    .dev-banner .back-link {
+      position: absolute;
+      left: 16px;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .dev-banner .back-link:hover {
+      color: #00bfff;
+    }
 
     /* About toggle button */
     .about-toggle {
@@ -99,40 +114,6 @@
       display: inline-block;
       margin-top: 1rem;
       opacity: 0.7;
-    }
-
-    /* Back to site button */
-    .back-to-site {
-      position: fixed;
-      top: 36px;
-      left: 20px;
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.6);
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
-      z-index: 300;
-      transition: all 0.2s;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .back-to-site:hover {
-      border-color: rgba(0, 191, 255, 0.5);
-      color: #00bfff;
-      background: rgba(0, 191, 255, 0.08);
-    }
-    .back-to-site .arrow {
-      font-size: 14px;
-      opacity: 0.5;
-      transition: opacity 0.2s;
-    }
-    .back-to-site:hover .arrow {
-      opacity: 1;
     }
 
     /* Changelog dropdown */
@@ -210,10 +191,9 @@
 <body>
   <!-- Live Development Banner -->
   <div class="dev-banner">
-    <strong>Live Development Project</strong> — This game is being built in the open. Watch it evolve, or <a href="https://github.com/tradewithmeai/3d-cube-game" target="_blank">help build it</a>.
+    <a href="https://solvx.uk" class="back-link">&larr; solvx.uk</a>
+    <span><strong>Live Development Project</strong> — This game is being built in the open. Watch it evolve, or <a href="https://github.com/tradewithmeai/3d-cube-game" target="_blank">help build it</a>.</span>
   </div>
-
-  <a href="https://solvx.uk" class="back-to-site"><span class="arrow">&larr;</span> solvx.uk</a>
 
   <canvas id="game-canvas"></canvas>
 
