@@ -28,6 +28,27 @@ Ideas for contributions:
 - Performance optimisations
 - Documentation
 
+### Use AI to Help You Contribute
+
+You don't need to be an expert developer. Agentic coding tools can do the heavy lifting:
+
+**Option 1: Claude (Web)**
+1. Fork this repo and clone it locally
+2. Go to [claude.ai](https://claude.ai)
+3. Paste the relevant code files into the chat
+4. Describe the change you want in plain English (e.g. "Add a move counter that increments each time a face is rotated")
+5. Copy the generated code back into your files
+6. Test with `npm run dev`, commit, and open a PR
+
+**Option 2: Claude Code (CLI)**
+1. Install [Claude Code](https://claude.com/claude-code)
+2. Fork and clone this repo
+3. Run `claude` in the project directory
+4. Tell it what to build or fix — it reads the codebase, makes changes, and can even commit for you
+5. Review the changes, push, and open a PR
+
+This is a great way to learn coding through AI-assisted development. The AI handles the syntax, you provide the ideas.
+
 ### Code Style
 - Keep it simple and readable
 - Use vanilla JavaScript (no frameworks beyond Three.js)
