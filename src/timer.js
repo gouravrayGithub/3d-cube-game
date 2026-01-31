@@ -79,6 +79,7 @@ export class CubeTimer {
     this.hasStarted = false;
     this.moveCount = 0;
     this.updateDisplay();
+    this.updateMoveDisplay()
     console.log('Timer reset');
   }
 
