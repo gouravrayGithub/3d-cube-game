@@ -101,6 +101,40 @@
       opacity: 0.7;
     }
 
+    /* Back to site button */
+    .back-to-site {
+      position: fixed;
+      top: 36px;
+      left: 20px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.6);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+      z-index: 300;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-to-site:hover {
+      border-color: rgba(0, 191, 255, 0.5);
+      color: #00bfff;
+      background: rgba(0, 191, 255, 0.08);
+    }
+    .back-to-site .arrow {
+      font-size: 14px;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    .back-to-site:hover .arrow {
+      opacity: 1;
+    }
+
     /* Changelog dropdown */
     .changelog-toggle {
       position: fixed;
@@ -179,6 +213,8 @@
     <strong>Live Development Project</strong> — This game is being built in the open. Watch it evolve, or <a href="https://github.com/tradewithmeai/3d-cube-game" target="_blank">help build it</a>.
   </div>
 
+  <a href="https://solvx.uk" class="back-to-site"><span class="arrow">&larr;</span> solvx.uk</a>
+
   <canvas id="game-canvas"></canvas>
 
   <div id="ui">
@@ -240,7 +276,6 @@
       <li><a href="https://claude.com/claude-code" target="_blank">Claude Code</a> — Install the CLI, point it at your fork, and start talking. It handles git, code changes, and PRs.</li>
     </ul>
 
-    <a href="https://solvx.uk" class="back-link">← Back to solvX.uk</a>
   </div>
 
   <!-- Changelog Toggle -->
