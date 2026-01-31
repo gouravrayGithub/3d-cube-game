@@ -100,6 +100,77 @@
       margin-top: 1rem;
       opacity: 0.7;
     }
+
+    /* Changelog dropdown */
+    .changelog-toggle {
+      position: fixed;
+      top: 36px;
+      right: 20px;
+      background: rgba(0, 191, 255, 0.2);
+      border: 1px solid rgba(0, 191, 255, 0.4);
+      color: #00bfff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 300;
+      transition: all 0.2s;
+    }
+    .changelog-toggle:hover {
+      background: rgba(0, 191, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .changelog-panel {
+      display: none;
+      position: fixed;
+      top: 76px;
+      right: 20px;
+      width: 360px;
+      max-height: 60vh;
+      overflow-y: auto;
+      background: rgba(0, 10, 26, 0.95);
+      border: 1px solid rgba(0, 191, 255, 0.3);
+      border-radius: 12px;
+      padding: 1rem;
+      color: #f1f1f1;
+      font-size: 12px;
+      line-height: 1.5;
+      z-index: 300;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+    .changelog-panel.open { display: block; }
+    .changelog-panel h3 {
+      color: #00bfff;
+      font-size: 0.95rem;
+      margin: 0 0 0.8rem 0;
+    }
+    .commit-item {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .commit-item:last-child { border-bottom: none; }
+    .commit-msg {
+      color: #f1f1f1;
+      font-size: 12px;
+      margin-bottom: 0.2rem;
+    }
+    .commit-meta {
+      color: #888;
+      font-size: 11px;
+    }
+    .commit-meta a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+    .commit-meta a:hover { text-decoration: underline; }
+    .changelog-loading {
+      color: #888;
+      text-align: center;
+      padding: 1rem;
+    }
   </style>
 </head>
 <body>
@@ -171,6 +242,52 @@
 
     <a href="https://solvx.uk" class="back-link">← Back to solvX.uk</a>
   </div>
+
+  <!-- Changelog Toggle -->
+  <button class="changelog-toggle" onclick="toggleChangelog()">Changelog</button>
+
+  <!-- Changelog Panel -->
+  <div class="changelog-panel" id="changelog-panel">
+    <h3>Recent Changes</h3>
+    <div id="changelog-content"><div class="changelog-loading">Loading...</div></div>
+  </div>
+
+  <script>
+    let changelogLoaded = false;
+
+    function toggleChangelog() {
+      const panel = document.getElementById('changelog-panel');
+      panel.classList.toggle('open');
+      if (!changelogLoaded && panel.classList.contains('open')) {
+        loadChangelog();
+      }
+    }
+
+    function loadChangelog() {
+      fetch('https://api.github.com/repos/tradewithmeai/3d-cube-game/commits?per_page=10')
+        .then(r => r.json())
+        .then(commits => {
+          const container = document.getElementById('changelog-content');
+          if (!commits.length) {
+            container.innerHTML = '<p style="color:#888">No commits found.</p>';
+            return;
+          }
+          container.innerHTML = commits.map(c => {
+            const msg = c.commit.message.split('\n')[0];
+            const date = new Date(c.commit.author.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            const sha = c.sha.substring(0, 7);
+            return `<div class="commit-item">
+              <div class="commit-msg">${msg}</div>
+              <div class="commit-meta">${date} · <a href="${c.html_url}" target="_blank">${sha}</a></div>
+            </div>`;
+          }).join('');
+          changelogLoaded = true;
+        })
+        .catch(() => {
+          document.getElementById('changelog-content').innerHTML = '<p style="color:#888">Could not load commits.</p>';
+        });
+    }
+  </script>
 
   <script type="module" src="/src/main.js"></script>
 </body>
