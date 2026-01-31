@@ -41,6 +41,92 @@
       color: #00bfff;
     }
 
+    /* Timer and Stats Display */
+    .game-stats {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+      z-index: 300;
+    }
+
+    .timer-container, .move-container {
+      background: rgba(0, 10, 26, 0.95);
+      border: 1px solid rgba(0, 191, 255, 0.3);
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .timer-container:hover, .move-container:hover {
+      border-color: rgba(0, 191, 255, 0.5);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .timer-label {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    .timer-display {
+      color: #00ff88;
+      font-size: 28px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+      letter-spacing: 1px;
+    }
+
+    .move-counter {
+      color: #00bfff;
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+    }
+
+    /* Pause button */
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .pause-btn {
+      background: rgba(0, 191, 255, 0.2);
+      border: 1px solid rgba(0, 191, 255, 0.4);
+      color: #00bfff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      transition: all 0.2s;
+      font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+    }
+
+    .pause-btn:hover:not(:disabled) {
+      background: rgba(0, 191, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .pause-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .pause-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
     /* About toggle button */
     .about-toggle {
       position: fixed;
@@ -115,6 +201,10 @@
       margin-top: 1rem;
       opacity: 0.7;
     }
+    .about-panel .feature-complete {
+      color: #00ff88;
+      font-weight: bold;
+    }
 
     /* Changelog dropdown */
     .changelog-toggle {
@@ -186,6 +276,27 @@
       text-align: center;
       padding: 1rem;
     }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .game-stats {
+        top: 40px;
+        right: 10px;
+      }
+      
+      .timer-display {
+        font-size: 24px;
+      }
+      
+      .move-counter {
+        font-size: 14px;
+      }
+
+      .about-panel {
+        width: calc(100vw - 40px);
+        max-width: 380px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -193,6 +304,21 @@
   <div class="dev-banner">
     <a href="https://solvx.uk" class="back-link">&larr; solvx.uk</a>
     <span><strong>Live Development Project</strong> — This game is being built in the open. Watch it evolve, or <a href="https://github.com/tradewithmeai/3d-cube-game" target="_blank">help build it</a>.</span>
+  </div>
+
+  <!-- Timer and Stats Display -->
+  <div class="game-stats">
+    <div class="timer-container">
+      <div class="timer-label">Time</div>
+      <div id="timer-display" class="timer-display">00:00.00</div>
+      <div class="timer-controls">
+        <button id="pause-btn" class="pause-btn" disabled>Pause</button>
+      </div>
+    </div>
+    
+    <div class="move-container">
+      <div id="move-counter" class="move-counter">Moves: 0</div>
+    </div>
   </div>
 
   <canvas id="game-canvas"></canvas>
@@ -208,6 +334,8 @@
       <p>Click + drag on cube to rotate faces</p>
       <p>Drag background to rotate view</p>
       <p>Keys: R, L, U, D, F, B (+ Shift for reverse)</p>
+      <p><em>Timer starts on first move after scramble</em></p>
+      <p><em>Press Space to pause/resume timer</em></p>
     </div>
   </div>
 
@@ -233,7 +361,7 @@
     <h3>What's next?</h3>
     <ul>
       <li>Fix the rotation bug (see above!)</li>
-      <li>Timer and move counter</li>
+      <li><span class="feature-complete">✓ Timer and move counter</span></li>
       <li>Solve detection and win state</li>
       <li>Mobile touch controls</li>
       <li>Colour themes and customisation</li>

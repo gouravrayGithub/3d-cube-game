@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RubiksCube } from './RubiksCube.js';
 import { ArrowIndicator } from './ArrowIndicator.js';
+import { CubeTimer } from './timer.js';
 
 // Scene setup
 const scene = new THREE.Scene();
@@ -47,6 +48,12 @@ const rubiksCube = new RubiksCube(scene);
 
 // Create arrow indicator
 const arrowIndicator = new ArrowIndicator(scene);
+
+// Create timer instance
+const timer = new CubeTimer();
+
+// Track if cube is scrambled
+let isScrambled = false;
 
 // Debug display element
 const debugDisplay = document.getElementById('debug-display');
@@ -112,6 +119,12 @@ function onPointerMove(event) {
     const rotation = determineRotation(selectedFace, dx, dy);
     if (rotation) {
       rubiksCube.rotateFace(rotation.face, rotation.clockwise);
+      
+      // Record move for timer (starts timer on first move)
+      if (isScrambled) {
+        timer.recordMove();
+      }
+      
       checkSolved();
     }
 
@@ -211,7 +224,16 @@ function determineRotation(face, dx, dy) {
 function checkSolved() {
   setTimeout(() => {
     if (rubiksCube.isSolved()) {
-      showMessage('Solved!', 'success');
+      // Stop timer when solved
+      timer.stop();
+      
+      const finalTime = timer.getFormattedTime();
+      const finalMoves = timer.getMoveCount();
+      
+      showMessage(`Solved! 🎉 Time: ${finalTime} | Moves: ${finalMoves}`, 'success');
+      
+      isScrambled = false;
+      document.getElementById('pause-btn').disabled = true;
     }
   }, 350);
 }
@@ -261,28 +283,71 @@ document.addEventListener('keydown', (event) => {
   const clockwise = !event.shiftKey;
   const key = event.key.toUpperCase();
 
+  let moved = false;
+  
   switch (key) {
-    case 'R': rubiksCube.rotateFace('R', clockwise); break;
-    case 'L': rubiksCube.rotateFace('L', clockwise); break;
-    case 'U': rubiksCube.rotateFace('U', clockwise); break;
-    case 'D': rubiksCube.rotateFace('D', clockwise); break;
-    case 'F': rubiksCube.rotateFace('F', clockwise); break;
-    case 'B': rubiksCube.rotateFace('B', clockwise); break;
-    case 'M': rubiksCube.rotateFace('M', clockwise); break;
-    case 'E': rubiksCube.rotateFace('E', clockwise); break;
-    case 'S': rubiksCube.rotateFace('S', clockwise); break;
+    case 'R': rubiksCube.rotateFace('R', clockwise); moved = true; break;
+    case 'L': rubiksCube.rotateFace('L', clockwise); moved = true; break;
+    case 'U': rubiksCube.rotateFace('U', clockwise); moved = true; break;
+    case 'D': rubiksCube.rotateFace('D', clockwise); moved = true; break;
+    case 'F': rubiksCube.rotateFace('F', clockwise); moved = true; break;
+    case 'B': rubiksCube.rotateFace('B', clockwise); moved = true; break;
+    case 'M': rubiksCube.rotateFace('M', clockwise); moved = true; break;
+    case 'E': rubiksCube.rotateFace('E', clockwise); moved = true; break;
+    case 'S': rubiksCube.rotateFace('S', clockwise); moved = true; break;
+    case ' ': // Spacebar for pause
+      if (isScrambled && timer.hasStarted) {
+        event.preventDefault();
+        document.getElementById('pause-btn').click();
+      }
+      break;
   }
 
-  checkSolved();
+  // Record move for timer
+  if (moved && isScrambled) {
+    timer.recordMove();
+    checkSolved();
+  }
+});
+
+// Pause button handler
+document.getElementById('pause-btn').addEventListener('click', () => {
+  if (timer.isTimerRunning()) {
+    timer.pause();
+    document.getElementById('pause-btn').textContent = 'Resume';
+    showMessage('Timer paused', 'info');
+  } else if (timer.hasStarted) {
+    timer.resume();
+    document.getElementById('pause-btn').textContent = 'Pause';
+    showMessage('Timer resumed', 'info');
+  }
 });
 
 // Button handlers
 document.getElementById('scramble-btn').addEventListener('click', () => {
   rubiksCube.scramble(20);
+  
+  // Initialize timer (ready to start on first move)
+  timer.initialize();
+  isScrambled = true;
+  
+  // Enable pause button
+  document.getElementById('pause-btn').disabled = false;
+  
+  showMessage('Cube scrambled! Make your first move to start timer', 'info');
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
   rubiksCube.reset();
+  
+  // Reset timer
+  timer.reset();
+  isScrambled = false;
+  
+  // Disable pause button
+  document.getElementById('pause-btn').disabled = true;
+  
+  showMessage('Cube reset', 'info');
 });
 
 // Handle window resize
