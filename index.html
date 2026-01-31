@@ -3,10 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rubik's Cube - 3D Puzzle Game</title>
+  <title>Rubik's Cube - 3D Puzzle Game | solvX.uk</title>
   <link rel="stylesheet" href="/src/style.css">
+  <style>
+    /* Live dev banner */
+    .dev-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 191, 255, 0.15);
+      border-bottom: 1px solid rgba(0, 191, 255, 0.4);
+      color: #fff;
+      text-align: center;
+      padding: 6px 12px;
+      font-size: 13px;
+      z-index: 300;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .dev-banner strong { color: #00bfff; }
+    .dev-banner a { color: #00bfff; text-decoration: none; }
+    .dev-banner a:hover { text-decoration: underline; }
+
+    /* About toggle button */
+    .about-toggle {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 191, 255, 0.2);
+      border: 1px solid rgba(0, 191, 255, 0.4);
+      color: #00bfff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 300;
+      transition: all 0.2s;
+    }
+    .about-toggle:hover {
+      background: rgba(0, 191, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* About panel */
+    .about-panel {
+      display: none;
+      position: fixed;
+      bottom: 60px;
+      left: 20px;
+      width: 380px;
+      max-height: 70vh;
+      overflow-y: auto;
+      background: rgba(0, 10, 26, 0.95);
+      border: 1px solid rgba(0, 191, 255, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      color: #f1f1f1;
+      font-size: 13px;
+      line-height: 1.7;
+      z-index: 300;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+    .about-panel.open { display: block; }
+    .about-panel h2 {
+      color: #00bfff;
+      font-size: 1.1rem;
+      margin: 0 0 0.8rem 0;
+    }
+    .about-panel h3 {
+      color: #00bfff;
+      font-size: 0.95rem;
+      margin: 1.2rem 0 0.5rem 0;
+    }
+    .about-panel p { margin: 0.5rem 0; opacity: 0.9; }
+    .about-panel ul {
+      margin: 0.5rem 0;
+      padding-left: 1.2rem;
+      opacity: 0.9;
+    }
+    .about-panel li { margin-bottom: 0.3rem; }
+    .about-panel a { color: #00bfff; text-decoration: none; }
+    .about-panel a:hover { text-decoration: underline; }
+    .about-panel .bug-callout {
+      background: rgba(255, 107, 0, 0.15);
+      border: 1px solid rgba(255, 107, 0, 0.4);
+      border-radius: 8px;
+      padding: 0.8rem;
+      margin: 0.8rem 0;
+    }
+    .about-panel .bug-callout strong { color: #ff6b00; }
+    .about-panel .back-link {
+      display: inline-block;
+      margin-top: 1rem;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
+  <!-- Live Development Banner -->
+  <div class="dev-banner">
+    <strong>Live Development Project</strong> — This game is being built in the open. Watch it evolve, or <a href="https://github.com/tradewithmeai/3d-cube-game" target="_blank">help build it</a>.
+  </div>
+
   <canvas id="game-canvas"></canvas>
 
   <div id="ui">
@@ -26,6 +127,43 @@
   <div id="message" class="message"></div>
 
   <div id="debug-display"></div>
+
+  <!-- About Toggle Button -->
+  <button class="about-toggle" onclick="document.querySelector('.about-panel').classList.toggle('open'); this.textContent = document.querySelector('.about-panel').classList.contains('open') ? 'Close' : 'About This Project'">About This Project</button>
+
+  <!-- Collapsible About Panel -->
+  <div class="about-panel">
+    <h2>About This Project</h2>
+    <p>This Rubik's Cube game is a live development experiment hosted on solvX.uk. It's built with Three.js and deployed automatically on every code change.</p>
+
+    <h3>Why is it here?</h3>
+    <p>We believe the best way to learn is by building in public. This project is intentionally unfinished — it's a playground for developers to experiment, contribute, and learn.</p>
+
+    <div class="bug-callout">
+      <strong>Known Bug:</strong> There's a bug with how sections of the cube rotate during gameplay. The game runs and is playable, but something isn't right. Can you spot it? Can you fix it? This is a real open issue — <a href="https://github.com/tradewithmeai/3d-cube-game/issues/1" target="_blank">check it on GitHub</a>.
+    </div>
+
+    <h3>What's next?</h3>
+    <ul>
+      <li>Fix the rotation bug (see above!)</li>
+      <li>Timer and move counter</li>
+      <li>Solve detection and win state</li>
+      <li>Mobile touch controls</li>
+      <li>Colour themes and customisation</li>
+      <li>Leaderboard (coming later)</li>
+    </ul>
+
+    <h3>Get Involved</h3>
+    <p>This is an open-source project. You can:</p>
+    <ul>
+      <li><a href="https://github.com/tradewithmeai/3d-cube-game/issues" target="_blank">Report bugs or request features</a></li>
+      <li><a href="https://github.com/tradewithmeai/3d-cube-game/fork" target="_blank">Fork the repo</a> and submit a Pull Request</li>
+      <li>Read the <a href="https://github.com/tradewithmeai/3d-cube-game/blob/main/CONTRIBUTING.md" target="_blank">contributor guide</a></li>
+    </ul>
+    <p>No experience needed. If you can write HTML, CSS, or JavaScript, you can contribute.</p>
+
+    <a href="https://solvx.uk" class="back-link">← Back to solvX.uk</a>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
